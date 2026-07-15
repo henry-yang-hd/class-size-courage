@@ -1,0 +1,95 @@
+---
+title: "Class Size: Courage"
+format:
+  html: default
+execute:
+  echo: false
+---
+
+```{r}
+#| label: setup
+#| message: false
+
+library(tidyverse)
+library(tidymodels)
+library(broom)
+library(easystats)
+
+star <- read_csv("data/class-size.csv", show_col_types = FALSE) |>
+  mutate(kind = recode(classtype,
+                       `1` = "small",
+                       `2` = "regular",
+                       `3` = "regular with aid")) |>
+  mutate(race = recode(race,
+                       `1` = "White",
+                       `2` = "Black",
+                       `3` = "Others",
+                       `4` = "Others",
+                       `5` = "Others",
+                       `6` = "Others")) |>
+  select(g4math, kind, race, yearssmall)
+```
+
+## The Question
+
+The Tennessee STAR experiment (Mosteller 1995) randomly assigned more than 6,000 students in about 80 Tennessee schools to small classes (13–17 students), regular classes (22–25), or regular classes with a teacher's aide, from kindergarten through third grade. Our data records each student's kindergarten class-type assignment, race, years spent in small classes across grades K through 3, and fourth-grade score on the math computation portion of the Stanford Achievement Test.
+
+Imagine you work for the Texas Department of Education. You want to understand the effect of small classes on student performance in Dallas. In Texas, there is data available like the data in the STAR project.
+
+The Texas Department of Education asks: What is the average causal effect of assigning a Dallas student to a small class on their fourth-grade math score?
+
+The setup chunk of this document loads the packages and the data, so today starts at the modeling.
+
+## Courage
+
+### Candidate Models
+
+Estimate a model in which `g4math` is the outcome and `kind` is the only covariate.
+
+
+
+Display the coefficients and their confidence intervals.
+
+
+
+Interpret the estimate for `kindsmall`.
+
+
+
+Estimate a model in which `g4math` is the outcome and `kind` and `race` are the covariates.
+
+
+
+Display the coefficients and their confidence intervals.
+
+
+
+Interpret the estimate for `raceWhite`.
+
+
+
+Add `yearssmall` to the previous model.
+
+
+
+Display the coefficients and their confidence intervals.
+
+
+
+Interpret the estimate for `yearssmall`.
+
+
+
+### The Data Generating Mechanism
+
+Which model should we choose, and why? Define `fit_classsize` as your chosen model and write out the fitted equation.
+
+
+
+### Model Checking
+
+Use `check_predictions(extract_fit_engine(fit_classsize))` to perform a posterior predictive check of your chosen model.
+
+
+
+------------------------------------------------------------------------
