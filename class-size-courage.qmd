@@ -46,50 +46,86 @@ The setup chunk of this document loads the packages and the data, so today start
 
 Estimate a model in which `g4math` is the outcome and `kind` is the only covariate.
 
-
+```{r}
+linear_reg() |>
+  fit(g4math ~ kind, data = star)
+```
 
 Display the coefficients and their confidence intervals.
 
-
+```{r}
+linear_reg() |> 
+  fit(g4math ~ kind, data = star) |> 
+    tidy(conf.int = TRUE)
+```
 
 Interpret the estimate for `kindsmall`.
 
+The average score from the smaller classes is 0.336 lower than regular classes.
 
 
 Estimate a model in which `g4math` is the outcome and `kind` and `race` are the covariates.
 
-
+```{r}
+linear_reg() |> 
+  fit(g4math ~ kind + race, data = star)
+```
 
 Display the coefficients and their confidence intervals.
 
-
+```{r}
+linear_reg() |> 
+  fit(g4math ~ kind + race, data = star) |> 
+    tidy(conf.int = TRUE)
+```
 
 Interpret the estimate for `raceWhite`.
 
+The average score from students that are race white is 16.1 higher than regular classes.
 
 
 Add `yearssmall` to the previous model.
 
-
+```{r}
+linear_reg() |> 
+  fit(g4math ~ kind + race + yearssmall, data = star)
+```
 
 Display the coefficients and their confidence intervals.
 
+```{r}
+linear_reg() |> 
+  fit(g4math ~ kind + race + yearssmall, data = star) |> 
+    tidy(conf.int = TRUE)
+```
 
 
 Interpret the estimate for `yearssmall`.
 
+The average score from students that have one more year in a small class score 2.18 points higher than students in a regular class.
 
 
 ### The Data Generating Mechanism
 
 Which model should we choose, and why? Define `fit_classsize` as your chosen model and write out the fitted equation.
 
+We should use the model in which `g4math` is the outcome and `kind`, `race`, and `yearssmall` are the covariates since it includes the most information and should be the most accurate.
+
+```{r}
+# Define our chosen model using linear_reg() from parsnip
+fit_classsize <- linear_reg() |> 
+  fit(g4math ~ kind + race + yearssmall, data = star)
+```
+
+$$g4math_i = 694.80 - 1.95 \times \text{regular with aid}_i - 7.66 \times \text{small}_i + 38.71 \times \text{Others}_i + 16.25 \times \text{White}_i + 2.18 \times \text{yearssmall}_i$$
 
 
 ### Model Checking
 
 Use `check_predictions(extract_fit_engine(fit_classsize))` to perform a posterior predictive check of your chosen model.
 
-
+```{r}
+check_predictions(extract_fit_engine(fit_classsize))
+```
 
 ------------------------------------------------------------------------
